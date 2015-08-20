@@ -33,21 +33,21 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate");
         mBlurFragments = new ArrayList<>();
+
+        // No color filter
         mBlurFragments.add(PlainFragment.newInstance(false));
-        mBlurFragments.add(PlainFragment.newInstance(true));
-        mBlurFragments.add(FastBlurFragment.newInstance(1.0f, FAST_BLUR_RADIUS, false));
         mBlurFragments.add(FastBlurFragment.newInstance(0.5f, FAST_BLUR_RADIUS, false));
         mBlurFragments.add(FastBlurFragment.newInstance(0.25f, FAST_BLUR_RADIUS, false));
         mBlurFragments.add(FastBlurFragment.newInstance(0.125f, FAST_BLUR_RADIUS, false));
-        mBlurFragments.add(FastBlurFragment.newInstance(1.0f, FAST_BLUR_RADIUS, true));
+
+        // Blue color filter
+        mBlurFragments.add(PlainFragment.newInstance(true));
         mBlurFragments.add(FastBlurFragment.newInstance(0.5f, FAST_BLUR_RADIUS, true));
         mBlurFragments.add(FastBlurFragment.newInstance(0.25f, FAST_BLUR_RADIUS, true));
         mBlurFragments.add(FastBlurFragment.newInstance(0.125f, FAST_BLUR_RADIUS, true));
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(5.0f, false));
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(10.0f, false));
+
+        // Render Script 
         mBlurFragments.add(RenderScriptBlurFragment.newInstance(20.0f, false));
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(5.0f, true));
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(10.0f, true));
         mBlurFragments.add(RenderScriptBlurFragment.newInstance(20.0f, true));
 
         mPager.setAdapter(new BlurPagerAdapter(getSupportFragmentManager()));
