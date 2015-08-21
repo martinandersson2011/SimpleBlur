@@ -36,12 +36,12 @@ public class RenderScriptBlurFragment extends Fragment {
     TextView mStatusText;
 
     float mBlurRadius;
-    boolean mUseColorFilter;
+    float mAlpha;
 
-    public static RenderScriptBlurFragment newInstance(float blurRadius, boolean useColorFilter) {
+    public static RenderScriptBlurFragment newInstance(float blurRadius, float alpha) {
         RenderScriptBlurFragment fragment = new RenderScriptBlurFragment();
         fragment.mBlurRadius = blurRadius;
-        fragment.mUseColorFilter = useColorFilter;
+        fragment.mAlpha = alpha;
         return fragment;
     }
 
@@ -50,9 +50,6 @@ public class RenderScriptBlurFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_layout, container, false);
         ButterKnife.bind(this, view);
         Log.d(TAG, "onCreateView");
-        if (mUseColorFilter) {
-            BlurUtils.setColorFilterBlue(mBlurredView);
-        }
 
         applyBlur();
         return view;
@@ -67,6 +64,8 @@ public class RenderScriptBlurFragment extends Fragment {
 
                 Bitmap bitmap = mImageView.getDrawingCache();
                 blur(bitmap, mBlurredView);
+                mImageView.setVisibility(View.GONE);
+                mBlurredView.setAlpha(mAlpha);
                 return true;
             }
         });
@@ -94,7 +93,7 @@ public class RenderScriptBlurFragment extends Fragment {
         imageView.setImageBitmap(overlay);
 
         rs.destroy();
-        mStatusText.setText((System.currentTimeMillis() - startMs) + "ms, " + TAG + ": radius=" + mBlurRadius);
+        mStatusText.setText((System.currentTimeMillis() - startMs) + "ms (RS), radius=" + mBlurRadius + ", alpha=" + mAlpha);
 
     }
 

@@ -18,7 +18,18 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    public static final float FAST_BLUR_RADIUS = 10.0f;
+    public static final float BLUR_RADIUS_10 = 10.0f;
+    public static final float BLUR_RADIUS_12 = 12.0f;
+    public static final float BLUR_RADIUS_14 = 14.0f;
+    public static final float BLUR_RADIUS_16 = 16.0f;
+    public static final float BLUR_RADIUS_18 = 18.0f;
+    public static final float BLUR_RADIUS_20 = 20.0f;
+
+    public static final float BLUR_SCALE_1_OF_4 = 0.25f;
+
+    public static final float OPACITY_5_PERCENT = 0.05f;
+    public static final float OPACITY_10_PERCENT = 0.10f;
+    public static final float OPACITY_100_PERCENT = 1.00f;
 
     @Bind(R.id.pager)
     ViewPager mPager;
@@ -34,21 +45,23 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate");
         mBlurFragments = new ArrayList<>();
 
-        // No color filter
-        mBlurFragments.add(PlainFragment.newInstance(false));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.5f, FAST_BLUR_RADIUS, false));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.25f, FAST_BLUR_RADIUS, false));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.125f, FAST_BLUR_RADIUS, false));
+        // No blur
+        mBlurFragments.add(PlainFragment.newInstance(OPACITY_100_PERCENT));
+        mBlurFragments.add(PlainFragment.newInstance(OPACITY_5_PERCENT));
 
-        // Blue color filter
-        mBlurFragments.add(PlainFragment.newInstance(true));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.5f, FAST_BLUR_RADIUS, true));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.25f, FAST_BLUR_RADIUS, true));
-        mBlurFragments.add(FastBlurFragment.newInstance(0.125f, FAST_BLUR_RADIUS, true));
+        // Fast blur
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_10, OPACITY_100_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_10, OPACITY_10_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_12, OPACITY_10_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_14, OPACITY_10_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_16, OPACITY_10_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_18, OPACITY_10_PERCENT));
+        mBlurFragments.add(FastBlurFragment.newInstance(BLUR_SCALE_1_OF_4, BLUR_RADIUS_20, OPACITY_10_PERCENT));
 
-        // Render Script 
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(20.0f, false));
-        mBlurFragments.add(RenderScriptBlurFragment.newInstance(20.0f, true));
+        // Render Script
+        mBlurFragments.add(RenderScriptBlurFragment.newInstance(BLUR_RADIUS_20, OPACITY_100_PERCENT));
+        mBlurFragments.add(RenderScriptBlurFragment.newInstance(BLUR_RADIUS_20, OPACITY_10_PERCENT));
+        mBlurFragments.add(RenderScriptBlurFragment.newInstance(BLUR_RADIUS_20, OPACITY_5_PERCENT));
 
         mPager.setAdapter(new BlurPagerAdapter(getSupportFragmentManager()));
     }

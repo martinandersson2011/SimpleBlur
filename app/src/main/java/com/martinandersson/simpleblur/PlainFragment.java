@@ -21,14 +21,14 @@ public class PlainFragment extends Fragment {
     @Bind(R.id.status_text)
     TextView mStatusText;
 
-    boolean mUseColorFilter;
-
     @Bind(R.id.image_view)
     ImageView mImageView;
 
-    public static PlainFragment newInstance(boolean useColorFilter) {
+    float mAlpha;
+
+    public static PlainFragment newInstance(float alpha) {
         PlainFragment fragment = new PlainFragment();
-        fragment.mUseColorFilter = useColorFilter;
+        fragment.mAlpha = alpha;
         return fragment;
     }
 
@@ -37,17 +37,10 @@ public class PlainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_layout, container, false);
         ButterKnife.bind(this, view);
         Log.d(TAG, "onCreateView");
-        mStatusText.setText(mUseColorFilter ? "Color filter, but no blur." : "Plain image. Swipe left for the first blur");
+        mStatusText.setText((mAlpha > 0.99f) ? "No blur. Swipe left for next" : ("No blur, alpha=" + mAlpha));
+        mImageView.setAlpha(mAlpha);
 
-        if (mUseColorFilter) {
-            BlurUtils.setColorFilterBlue(mImageView);
-        }
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

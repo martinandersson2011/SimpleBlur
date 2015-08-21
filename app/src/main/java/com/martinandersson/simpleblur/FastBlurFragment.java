@@ -32,13 +32,14 @@ public class FastBlurFragment extends Fragment {
 
     float mScaleFactor;
     float mBlurRadius;
-    boolean mUseColorFilter;
+    float mAlpha;
 
-    public static FastBlurFragment newInstance(float scaleFactor, float blurRadius, boolean useColorFilter) {
+
+    public static FastBlurFragment newInstance(float scaleFactor, float blurRadius, float alpha) {
         FastBlurFragment fragment = new FastBlurFragment();
         fragment.mScaleFactor = scaleFactor;
         fragment.mBlurRadius = blurRadius;
-        fragment.mUseColorFilter = useColorFilter;
+        fragment.mAlpha = alpha;
         return fragment;
     }
 
@@ -47,10 +48,6 @@ public class FastBlurFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_layout, container, false);
         ButterKnife.bind(this, view);
         Log.d(TAG, "onCreateView");
-        if (mUseColorFilter) {
-            BlurUtils.setColorFilterBlue(mBlurredView);
-        }
-
         applyBlur();
         return view;
     }
@@ -64,6 +61,8 @@ public class FastBlurFragment extends Fragment {
 
                 Bitmap bitmap = mImageView.getDrawingCache();
                 applyBlur(bitmap, mBlurredView);
+                mImageView.setVisibility(View.INVISIBLE);
+                mBlurredView.setAlpha(mAlpha);
                 return true;
             }
         });
@@ -77,9 +76,10 @@ public class FastBlurFragment extends Fragment {
         canvas.translate(-imageView.getLeft(), -imageView.getTop());
         canvas.drawBitmap(bitmap, 0, 0, null);
         overlay = BlurUtils.fastblur(overlay, mScaleFactor, (int) mBlurRadius);
-//        imageView.setBackground(new BitmapDrawable(getResources(), overlay));
         imageView.setImageBitmap(overlay);
-        mStatusText.setText((System.currentTimeMillis() - startMs) + "ms, " + TAG + ": radius=" + mBlurRadius + ", scale=" + mScaleFactor);
+        mStatusText.setText((System.currentTimeMillis() - startMs) + "ms (Fast), radius=" + mBlurRadius + ", alpha=" + mAlpha);
+//        mStatusText.setText((System.currentTimeMillis() - startMs) + "ms (Fast), scale=" + mScaleFactor + ", radius=" + mBlurRadius + ", alpha=" + mAlpha);
+
     }
 
 }
